@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    build: ./db
+    ports:
+      - '3306:3306'
+    environment:
+       MYSQL_DATABASE: 'jetfoodle'
+       MYSQL_USER: 'seyma'
+       MYSQL_PASSWORD: 'vecihi06'
+       MYSQL_ROOT_PASSWORD: 'vecihi06'
+
+  web:
+    build: ./web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - /home/seyma/Desktop/JetFoodle/JetFoodle:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

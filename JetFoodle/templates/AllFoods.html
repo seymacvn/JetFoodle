@@ -1,0 +1,200 @@
+{%  extends "layout.html"%}
+{%  load static %}
+{%  block body %}
+
+    <img src="{% static 'images/allfoods.png' %}" alt="" width="1110" height="260">
+    <br>
+    <br>
+    <form action="{% url 'system:search_food_results' %}" method="get">
+        {% csrf_token %}
+        <input name="keyword" type="text" class="input-sm" maxlength="64" placeholder="Aradığınız Yemeği Yazınız">
+        <button type="submit" class="btn btn-primary btn-sm">Ara</button>
+    </form>
+    <hr>
+    <div class="container">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .flip-card {
+    background-color: transparent;
+    width: 200px;
+    height: 200px;
+    perspective: 1000px;
+    }
+
+    .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+
+    .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+    background-color: #bbb;
+    color: black;
+    }
+
+    .flip-card-back {
+    background-color: #bbbbbb;
+    color: white;
+    transform: rotateY(180deg);
+
+    }
+    </style>
+    <body>
+    <div class="row">
+    <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <br>
+        <br>
+        <br>
+          <h3 style="text-align:center" >ÇORBA</h3>
+        </div>
+        <div class="flip-card-back">
+            <a href="/system/selected-category/Çorba">
+                <img src="{% static 'images/soup.png' %}" alt="" style="width:200px;height:200px;">
+            </a>
+        </div>
+        </div>
+    </div>
+    &nbsp;&nbsp;&nbsp;
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <br>
+        <br>
+        <br>
+          <h3 style="text-align:center" >ANA YEMEK</h3>
+        </div>
+        <div class="flip-card-back">
+            <a href="/system/selected-category/Ana Yemek">
+                <img src="{% static 'images/fish.png' %}" alt="" style="width:200px;height:200px;">
+            </a>
+        </div>
+        </div>
+    </div>
+    &nbsp;&nbsp;&nbsp;
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <br>
+        <br>
+        <br>
+          <h3 style="text-align:center" >SALATA</h3>
+        </div>
+        <div class="flip-card-back">
+            <a href="/system/selected-category/Salata">
+                <img src="{% static 'images/salata.png' %}" alt="" style="width:200px;height:200px;">
+            </a>
+        </div>
+        </div>
+    </div>
+    &nbsp;    &nbsp;&nbsp;&nbsp;
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <br>
+        <br>
+        <br>
+          <h3 style="text-align:center" >TATLI</h3>
+        </div>
+        <div class="flip-card-back">
+            <a href="/system/selected-category/Tatlı">
+                <img src="{% static 'images/dessert.png' %}" alt="" style="width:200px;height:200px;">
+            </a>
+        </div>
+        </div>
+    </div>
+    &nbsp;    &nbsp;&nbsp;&nbsp;
+
+    <div class="flip-card">
+        <div class="flip-card-inner">
+        <div class="flip-card-front">
+        <br>
+        <br>
+        <br>
+          <h3 style="text-align:center" >İÇECEK</h3>
+        </div>
+        <div class="flip-card-back">
+            <a href="/system/selected-category/İçecek">
+                <img src="{% static 'images/drink.png' %}" alt="" style="width:200px;height:200px;">
+            </a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+</html>
+
+
+    </div>
+    <br>
+    {% if foods %}
+
+        {%  for food in foods %}
+            <div class="card bg-light mb-3" style="max-width: 72rem;">
+            <div class="card-header"><h3><img src = {{ food.picture.url }} width="120" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/system/selected-food/{{ food.id }}">{{ food.name }}</a>
+            </h3>
+            <h7 style="color: #555555">
+            {% for tag in food.tags.all %} &nbsp;
+                {{ tag.headline }}
+            {% endfor %}</h7>
+            </div>
+            </div>
+            <br>
+        {% endfor %}
+
+    {% else %}
+
+        <div class="alert alert-danger">
+            Herhangi Bir Restoran Bulunmuyor..
+        </div>
+
+    {% endif %}
+    {% if is_paginated %}
+        <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <h5><li><a href="?page={{ page_obj.previous_page_number }}">&laquo;&nbsp;&nbsp;</a></li></h5>
+        {% else %}
+            <h5><li class="disabled"><span>&laquo;&nbsp;&nbsp;</span></li></h5>
+        {% endif %}
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+                <h5><li class="active"><span>{{ i }}&nbsp;&nbsp; <span class="sr-only">(current)</span></span></li></h5>
+            {% else %}
+                <h5><li><a href="?page={{ i }}">{{ i }}&nbsp;&nbsp;</a></li></h5>
+             {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <h5><li><a href="?page={{ page_obj.next_page_number }}">&raquo;&nbsp;&nbsp;</a></li></h5>
+        {% else %}
+            <h5><li class="disabled"><span>&raquo;&nbsp;&nbsp;</span></li></h5>
+        {% endif %}
+        </ul>
+    {% endif %}
+{%  endblock body %}

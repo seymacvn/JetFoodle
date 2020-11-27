@@ -1,0 +1,62 @@
+{%  extends "layout.html"%}
+{%  load static %}
+{%  block body %}
+
+    <img src="{% static 'images/Restoranlar1.png' %}" alt="" width="1110" height="260">
+    <br>
+    <br>
+    <form action="{% url 'system:search_results' %}" method="get">
+            {% csrf_token %}
+            <input name="keyword" type="text" style="width: 270px" class="input-sm" maxlength="64" placeholder="Restoran veye Konum Arayabilirsiniz" size="30">
+            <button type="submit" class="btn btn-primary btn-sm">Ara</button>
+    </form>
+
+    {% if restaurants %}
+        <hr>
+        {% for restaurant in restaurants %}
+            <div class="card border-secondary mb-3" style="max-width: 72rem;">
+            <div class="card-header"><h3><a href="/system/selected-restaurant/{{ restaurant.id }}">{{ restaurant.name }}
+            <img src="https://image.flaticon.com/icons/svg/685/685352.svg" width="30" height="30" alt="Restaurant free icon" title="Restaurant free icon">
+            </a></h3></div>
+            <div class="card-body text-secondary">
+
+            <p class="card-text"><h6>Sahibi : {{ restaurant.owner.username }}</h6></p>
+            <p class="card-text"><h6>Konum : {{ restaurant.location }}</h6></p>
+            <p class="card-text"><h6>
+                Telefon Numarası : 123 45 67
+            </h6></p>
+
+
+            </div>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="alert alert-danger">
+            Herhangi bir restoran bulunamadı.
+        </div>
+
+    {% endif %}
+
+    {% if is_paginated %}
+        <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <h5><li><a href="?page={{ page_obj.previous_page_number }}">&laquo;&nbsp;&nbsp;</a></li></h5>
+        {% else %}
+            <h5><li class="disabled"><span>&laquo;&nbsp;&nbsp;</span></li></h5>
+        {% endif %}
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+                <h5><li class="active"><span>{{ i }}&nbsp;&nbsp; <span class="sr-only">(current)</span></span></li></h5>
+            {% else %}
+                <h5><li><a href="?page={{ i }}">{{ i }}&nbsp;&nbsp;</a></li></h5>
+             {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <h5><li><a href="?page={{ page_obj.next_page_number }}">&raquo;&nbsp;&nbsp;</a></li></h5>
+        {% else %}
+            <h5><li class="disabled"><span>&raquo;&nbsp;&nbsp;</span></li></h5>
+        {% endif %}
+        </ul>
+    {% endif %}
+{%  endblock body %}

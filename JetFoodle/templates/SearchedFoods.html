@@ -1,0 +1,40 @@
+{%  extends "layout.html"%}
+
+{%  block body %}
+    <h3>"{{ keyword }}" araması için yemek sonuçları:</h3>
+    <hr>
+    {% if foods %}
+        <table class="table">
+        <thead>
+        <tr>
+        <th scope="col">Yemek Resmi</th>
+        <th scope="col">Yemek İsmi</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {%  for food in foods %}
+        <tr>
+
+        {% if food.picture  %}
+            <th scope="row"><img src = {{ food.picture.url }} width="120" height="100"></th>
+        {% else %}
+            <th scope="row"></th>
+        {% endif %}
+        <td><a href="/system/selected-food/{{ food.id }}">{{ food.name }}</a></td>
+
+        </tr>
+
+        {%  endfor %}
+
+        </tbody>
+        </table>
+
+    {% else %}
+        <div class="alert alert-danger">
+            Arama sonucunda herhangi bir yemek bulunamadı
+        </div>
+
+    {% endif %}
+
+{%  endblock body %}

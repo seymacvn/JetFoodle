@@ -1,0 +1,9 @@
+<h1>Search Results</h1>
+
+<ul>
+  {% for restaurant in object_list %}
+    <li>
+      {{ restaurant.name }}, {{ restaurant.location }}
+    </li>
+  {% endfor %}
+</ul>

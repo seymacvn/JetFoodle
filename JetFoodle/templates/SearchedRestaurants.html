@@ -1,0 +1,36 @@
+{%  extends "layout.html"%}
+
+{%  block body %}
+    <h3>"{{ keyword }}" araması için restoran sonuçları:</h3>
+
+    {% if restaurants %}
+        <hr>
+        <table class="table">
+        <thead>
+        <tr>
+        <th scope="col">Restoran İsmi</th>
+        <th scope="col">Konumu</th>
+        <th scope="col">Oluşturulma Tarihi</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {%  for restaurant in restaurants %}
+        <tr>
+        <td><a href="/system/selected-restaurant/{{ restaurant.id }}">{{ restaurant.name }}</a></td>
+        <td>{{ restaurant.location }}</td>
+        <td>{{ restaurant.created_date }}</td>
+        </tr>
+        {%  endfor %}
+
+        </tbody>
+        </table>
+
+    {% else %}
+        <div class="alert alert-danger">
+            Arama sonucunda herhangi bir restoran bulunamadı
+        </div>
+
+    {% endif %}
+
+{%  endblock body %}

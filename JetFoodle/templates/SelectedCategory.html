@@ -1,0 +1,50 @@
+{%  extends "layout.html"%}
+{%  load static %}
+{%  block body %}
+
+    {% if category == "Çorba" %}
+        <img src="{% static 'images/Çorba.png' %}" alt="" width="1110" height="260">
+    {%  elif category == "Ana Yemek"%}
+        <img src="{% static 'images/AnaYemek.png' %}" alt="" width="1110" height="260">
+    {%  elif category == "Salata"%}
+        <img src="{% static 'images/Salata1.png' %}" alt="" width="1110" height="260">
+    {%  elif category == "Tatlı"%}
+        <img src="{% static 'images/Tatlı.png' %}" alt="" width="1110" height="260">
+    {%  elif category == "İçecek"%}
+        <img src="{% static 'images/İçecek.png' %}" alt="" width="1110" height="260">
+    {% endif %}
+    <br>
+
+    {% if foods %}
+        <br>
+        <div class="col-4">
+            <form action="{% url 'system:search_category_food_results' %}" method="get">
+                {% csrf_token %}
+                <input name="keyword" style="width: 270px" type="text" class="input-sm" maxlength="72" placeholder="{{ category }} Kategorisinde Arama Yap!">
+                <button type="submit" class="btn btn-primary btn-sm">Ara</button>
+            </form>
+        </div>
+        <br>
+
+        {%  for food in foods %}
+        <div class="card bg-light mb-3" style="max-width: 72rem;">
+            <div class="card-header"><h3><img src = {{ food.picture.url }} width="120" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="/system/selected-food/{{ food.id }}">{{ food.name }}</a>
+            </h3>
+            <h7 style="color: #555555">
+            {% for tag in food.tags.all %} &nbsp;
+                {{ tag.headline }}
+            {% endfor %}
+            </h7>
+            </div></div>
+            <br>
+        {% endfor %}
+
+    {% else %}
+        <div class="alert alert-danger">
+            Herhangi Bir Restoran Bulunmuyor..
+        </div>
+
+    {% endif %}
+
+{%  endblock body %}
